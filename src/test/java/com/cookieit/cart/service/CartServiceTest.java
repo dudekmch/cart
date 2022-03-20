@@ -2,6 +2,7 @@ package com.cookieit.cart.service;
 
 import com.cookieit.cart.domain.service.CartService;
 import com.cookieit.cart.model.dto.CartDTO;
+import com.cookieit.cart.model.exception.CartNotFoundException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,9 @@ import static com.cookieit.cart.TestConstant.CART_SHOP_NAME;
 @DirtiesContext
 public class CartServiceTest {
 
+    private static final Long IMPORT_DATA_CART_ID = 1L;
+    private static final Integer IMPORT_DATA_CARTS_NUMBER = 1;
+
     @Autowired
     private CartService cartService;
 
@@ -36,7 +40,29 @@ public class CartServiceTest {
 
     @Test
     public void shouldReturnAllCarts() {
-        List<CartDTO> cartDTOs = cartService.getCards();
-        MatcherAssert.assertThat(cartDTOs.size(), Matchers.equalTo(1));
+        List<CartDTO> cartDTOs = cartService.getCarts();
+        MatcherAssert.assertThat(cartDTOs.size(), Matchers.equalTo(IMPORT_DATA_CARTS_NUMBER));
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void shouldRemoveCart() {
+        cartService.removeCart(IMPORT_DATA_CART_ID);
+        List<CartDTO> cartDTOs = cartService.getCarts();
+        MatcherAssert.assertThat(cartDTOs.size(), Matchers.equalTo(IMPORT_DATA_CARTS_NUMBER - 1));
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    public void shouldUpdateShopNameInCart() throws CartNotFoundException {
+        final String updatedShopName = "updatedShopName";
+        CartDTO cartDTO = CartDTO.builder()
+                .id(IMPORT_DATA_CART_ID)
+                .shopName(updatedShopName)
+                .build();
+        cartService.updateCart(cartDTO);
+        List<CartDTO> cartDTOs = cartService.getCarts();
+        MatcherAssert.assertThat(cartDTOs.size(), Matchers.equalTo(IMPORT_DATA_CARTS_NUMBER));
+        MatcherAssert.assertThat(cartDTOs.get(0).getShopName(), Matchers.equalTo(updatedShopName));
     }
 }
