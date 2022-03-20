@@ -5,8 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,8 +14,6 @@ public class Cart extends AbstractEntity {
     @Column(nullable = false)
     private String shopName;
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private OffsetDateTime created;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart", cascade = {CascadeType.REMOVE})
