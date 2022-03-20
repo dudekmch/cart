@@ -5,6 +5,7 @@ import com.cookieit.cart.model.dto.CartDTO;
 import com.cookieit.cart.model.exception.CartNotFoundException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +21,6 @@ import static com.cookieit.cart.TestConstant.CART_SHOP_NAME;
 @SpringBootTest
 @EnableTransactionManagement
 @TestPropertySource("/utest.properties")
-@DirtiesContext
 public class CartServiceTest {
 
     private static final Long IMPORT_DATA_CART_ID = 1L;
@@ -32,8 +32,8 @@ public class CartServiceTest {
     @Test
     public void shouldCreateCartAndReturnIdSavedCart() {
         CartDTO cartToSave = CartDTO.builder()
-                        .shopName(CART_SHOP_NAME)
-                        .build();
+                .shopName(CART_SHOP_NAME)
+                .build();
         Long savedCartId = cartService.createCart(cartToSave);
         MatcherAssert.assertThat(savedCartId, Matchers.equalTo(2L));
     }
@@ -64,5 +64,18 @@ public class CartServiceTest {
         List<CartDTO> cartDTOs = cartService.getCarts();
         MatcherAssert.assertThat(cartDTOs.size(), Matchers.equalTo(IMPORT_DATA_CARTS_NUMBER));
         MatcherAssert.assertThat(cartDTOs.get(0).getShopName(), Matchers.equalTo(updatedShopName));
+    }
+
+    @Test
+    public void shouldThrowCartNotFoundExceptionWhenCartWithIdNotExist() {
+        final String updatedShopName = "updatedShopName";
+        final Long notExistCartId = IMPORT_DATA_CART_ID + 1;
+        CartDTO cartDTO = CartDTO.builder()
+                .id(notExistCartId)
+                .shopName(updatedShopName)
+                .build();
+        CartNotFoundException thrown =
+                Assertions.assertThrows(CartNotFoundException.class, () -> cartService.updateCart(cartDTO));
+        MatcherAssert.assertThat(thrown.getMessage(), Matchers.equalTo("Not found cart with id: " + notExistCartId));
     }
 }
