@@ -18,6 +18,11 @@ public class CartService {
         this.cartRepository = cartRepository;
     }
 
+    public CartDTO getCart(final Long id) throws CartNotFoundException {
+        Cart cart = getCartEntity(id);
+        return CartToCartDTOMapper.mapCartToCartDTO(cart);
+    }
+
     public Long createCart(final CartDTO cartDTO) {
         Cart cart = new Cart();
         cart.setShopName(cartDTO.getShopName());
@@ -35,10 +40,14 @@ public class CartService {
     }
 
     public void updateCart(final CartDTO cartDTO) throws CartNotFoundException {
-        Cart cart = cartRepository.findById(cartDTO.getId())
-                .orElseThrow(() -> new CartNotFoundException("Not found cart with id: " + cartDTO.getId()));
+        Cart cart = getCartEntity(cartDTO.getId());
 
         cart.setShopName(cartDTO.getShopName());
         cartRepository.save(cart);
+    }
+
+    private Cart getCartEntity(Long id) throws CartNotFoundException {
+        return cartRepository.findById(id)
+                .orElseThrow(() -> new CartNotFoundException("Not found cart with id: " + id));
     }
 }
