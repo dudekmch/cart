@@ -15,7 +15,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.List;
 
+import static com.cookieit.cart.TestConstant.CART_NOT_FOUND_EXCEPTION_MESSAGE;
 import static com.cookieit.cart.TestConstant.CART_SHOP_NAME;
+import static com.cookieit.cart.TestConstant.IMPORT_DATA_CART_ID;
+import static com.cookieit.cart.TestConstant.NOT_EXIST_CART_ID;
 
 
 @SpringBootTest
@@ -23,9 +26,7 @@ import static com.cookieit.cart.TestConstant.CART_SHOP_NAME;
 @TestPropertySource("/utest.properties")
 public class CartServiceTest {
 
-    private static final Long IMPORT_DATA_CART_ID = 1L;
     private static final Integer IMPORT_DATA_CARTS_NUMBER = 1;
-    private static final Long NOT_EXIST_CART_ID = IMPORT_DATA_CART_ID + 1L;
     private static final String  CART_SHOP_NAME_NEW_VALUE = "updatedShopName";
 
     @Autowired
@@ -41,7 +42,7 @@ public class CartServiceTest {
     public void shouldThrowCartNotFoundExceptionWhenCartWithIdNotExist() {
         CartNotFoundException thrown =
                 Assertions.assertThrows(CartNotFoundException.class, () -> cartService.getCart(NOT_EXIST_CART_ID));
-        MatcherAssert.assertThat(thrown.getMessage(), Matchers.equalTo("Not found cart with id: " + NOT_EXIST_CART_ID));
+        MatcherAssert.assertThat(thrown.getMessage(), Matchers.equalTo(CART_NOT_FOUND_EXCEPTION_MESSAGE + NOT_EXIST_CART_ID));
     }
 
     @Test
@@ -52,7 +53,7 @@ public class CartServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldCreateCartAndReturnIdSavedCart() {
+    public void shouldCreateCartAndReturnId() {
         CartDTO cartToSave = CartDTO.builder()
                 .shopName(CART_SHOP_NAME)
                 .build();
@@ -89,6 +90,6 @@ public class CartServiceTest {
                 .build();
         CartNotFoundException thrown =
                 Assertions.assertThrows(CartNotFoundException.class, () -> cartService.updateCart(cartDTO));
-        MatcherAssert.assertThat(thrown.getMessage(), Matchers.equalTo("Not found cart with id: " + NOT_EXIST_CART_ID));
+        MatcherAssert.assertThat(thrown.getMessage(), Matchers.equalTo(CART_NOT_FOUND_EXCEPTION_MESSAGE + NOT_EXIST_CART_ID));
     }
 }
