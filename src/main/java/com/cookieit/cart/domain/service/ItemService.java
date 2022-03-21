@@ -3,9 +3,13 @@ package com.cookieit.cart.domain.service;
 import com.cookieit.cart.domain.entity.Cart;
 import com.cookieit.cart.domain.entity.Item;
 import com.cookieit.cart.domain.repository.ItemRepository;
+import com.cookieit.cart.model.dto.CartDTO;
 import com.cookieit.cart.model.dto.ItemDTO;
 import com.cookieit.cart.model.exception.CartNotFoundException;
+import com.cookieit.cart.model.exception.ItemNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -32,4 +36,11 @@ public class ItemService {
         itemRepository.deleteById(itemId);
     }
 
+    public void updateItem(final ItemDTO itemDTO) throws ItemNotFoundException {
+        Item item = itemRepository.findById(itemDTO.getId())
+                .orElseThrow(() -> new ItemNotFoundException("Not found item with id: " + itemDTO.getId()));
+        item.setName(itemDTO.getName());
+        item.setQuantity(itemDTO.getQuantity());
+        itemRepository.save(item);
+    }
 }
