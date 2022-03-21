@@ -21,7 +21,7 @@
             <column name="shop_name" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created" type="DATETIME" defaultValue="NOW">
+            <column name="created" type="TIMESTAMP" defaultValue="NOW">
             </column>
         </createTable>
     </changeSet>
