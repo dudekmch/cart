@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
-@Table
+@Table(schema = "cart")
 public class Cart extends AbstractEntity {
 
     @Column(nullable = false)
