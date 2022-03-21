@@ -1,6 +1,6 @@
 package com.cookieit.cart.service;
 
-import com.cookieit.cart.domain.service.CartService;
+import com.cookieit.cart.domain.CartService;
 import com.cookieit.cart.model.dto.CartDTO;
 import com.cookieit.cart.model.exception.CartNotFoundException;
 import org.hamcrest.MatcherAssert;
@@ -27,7 +27,7 @@ import static com.cookieit.cart.TestConstant.NOT_EXIST_CART_ID;
 public class CartServiceTest {
 
     private static final Integer IMPORT_DATA_CARTS_NUMBER = 1;
-    private static final String  CART_SHOP_NAME_NEW_VALUE = "updatedShopName";
+    private static final String CART_SHOP_NAME_NEW_VALUE = "updatedShopName";
 
     @Autowired
     private CartService cartService;

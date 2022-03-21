@@ -1,5 +1,6 @@
 package com.cookieit.cart.domain.service;
 
+import com.cookieit.cart.domain.CartService;
 import com.cookieit.cart.domain.entity.Cart;
 import com.cookieit.cart.domain.entity.mapper.CartToCartDTOMapper;
 import com.cookieit.cart.domain.repository.CartRepository;
@@ -10,11 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CartService {
+public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
 
-    public CartService(CartRepository cartRepository) {
+    public CartServiceImpl(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
     }
 

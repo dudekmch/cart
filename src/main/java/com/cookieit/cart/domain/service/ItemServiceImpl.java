@@ -1,23 +1,21 @@
 package com.cookieit.cart.domain.service;
 
+import com.cookieit.cart.domain.ItemService;
 import com.cookieit.cart.domain.entity.Cart;
 import com.cookieit.cart.domain.entity.Item;
 import com.cookieit.cart.domain.repository.ItemRepository;
-import com.cookieit.cart.model.dto.CartDTO;
 import com.cookieit.cart.model.dto.ItemDTO;
 import com.cookieit.cart.model.exception.CartNotFoundException;
 import com.cookieit.cart.model.exception.ItemNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
-public class ItemService {
+public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
-    private final CartService cartService;
+    private final CartServiceImpl cartService;
 
-    public ItemService(ItemRepository itemRepository, CartService cartService) {
+    public ItemServiceImpl(ItemRepository itemRepository, CartServiceImpl cartService) {
         this.itemRepository = itemRepository;
         this.cartService = cartService;
     }
