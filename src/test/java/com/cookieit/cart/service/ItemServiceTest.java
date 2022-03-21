@@ -3,7 +3,6 @@ package com.cookieit.cart.service;
 import com.cookieit.cart.domain.ItemService;
 import com.cookieit.cart.domain.entity.Item;
 import com.cookieit.cart.domain.repository.ItemRepository;
-import com.cookieit.cart.domain.service.ItemServiceImpl;
 import com.cookieit.cart.model.dto.ItemDTO;
 import com.cookieit.cart.model.exception.CartNotFoundException;
 import com.cookieit.cart.model.exception.ItemNotFoundException;
