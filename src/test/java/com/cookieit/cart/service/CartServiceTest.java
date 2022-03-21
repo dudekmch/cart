@@ -73,10 +73,9 @@ public class CartServiceTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldUpdateShopNameInCart() throws CartNotFoundException {
         CartDTO cartDTO = CartDTO.builder()
-                .id(IMPORT_DATA_CART_ID)
                 .shopName(CART_SHOP_NAME_NEW_VALUE)
                 .build();
-        cartService.updateCart(cartDTO);
+        cartService.updateCart(IMPORT_DATA_CART_ID, cartDTO);
         List<CartDTO> cartDTOs = cartService.getCarts();
         MatcherAssert.assertThat(cartDTOs.size(), Matchers.equalTo(IMPORT_DATA_CARTS_NUMBER));
         MatcherAssert.assertThat(cartDTOs.get(0).getShopName(), Matchers.equalTo(CART_SHOP_NAME_NEW_VALUE));
@@ -85,11 +84,10 @@ public class CartServiceTest {
     @Test
     public void shouldThrowCartNotFoundExceptionWhenCartToUpdateNotExist() {
         CartDTO cartDTO = CartDTO.builder()
-                .id(NOT_EXIST_CART_ID)
                 .shopName(CART_SHOP_NAME_NEW_VALUE)
                 .build();
         CartNotFoundException thrown =
-                Assertions.assertThrows(CartNotFoundException.class, () -> cartService.updateCart(cartDTO));
+                Assertions.assertThrows(CartNotFoundException.class, () -> cartService.updateCart(NOT_EXIST_CART_ID, cartDTO));
         MatcherAssert.assertThat(thrown.getMessage(), Matchers.equalTo(CART_NOT_FOUND_EXCEPTION_MESSAGE + NOT_EXIST_CART_ID));
     }
 }

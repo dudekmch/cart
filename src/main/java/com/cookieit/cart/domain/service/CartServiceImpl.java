@@ -40,8 +40,8 @@ public class CartServiceImpl implements CartService {
         cartRepository.deleteById(id);
     }
 
-    public void updateCart(final CartDTO cartDTO) throws CartNotFoundException {
-        Cart cart = getCartEntity(cartDTO.getId());
+    public void updateCart(final Long id, final CartDTO cartDTO) throws CartNotFoundException {
+        Cart cart = getCartEntity(id);
 
         cart.setShopName(cartDTO.getShopName());
         cartRepository.save(cart);

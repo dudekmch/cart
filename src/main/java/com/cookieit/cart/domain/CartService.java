@@ -15,5 +15,5 @@ public interface CartService {
 
     void removeCart(final Long id);
 
-    void updateCart(final CartDTO cartDTO) throws CartNotFoundException;
+    void updateCart(final Long id, final CartDTO cartDTO) throws CartNotFoundException;
 }
