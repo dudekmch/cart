@@ -3,7 +3,7 @@ package com.cookieit.cart.model.dto;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -14,7 +14,7 @@ public class CartDTO {
 
     private String shopName;
 
-    private OffsetDateTime created;
+    private LocalDateTime created;
 
     private List<ItemDTO> items;
 }

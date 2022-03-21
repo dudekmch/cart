@@ -1,21 +1,25 @@
 package com.cookieit.cart.domain.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
 public class Cart extends AbstractEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String shopName;
 
     @Column
-    private OffsetDateTime created;
+    @CreationTimestamp
+    private LocalDateTime created;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart", cascade = {CascadeType.REMOVE})
     private List<Item> items;
@@ -28,11 +32,11 @@ public class Cart extends AbstractEntity {
         this.shopName = shopName;
     }
 
-    public OffsetDateTime getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(OffsetDateTime created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 

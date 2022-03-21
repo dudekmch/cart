@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Item extends AbstractEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String name;
 
     @Column(nullable = false)
