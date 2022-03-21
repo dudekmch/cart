@@ -5,14 +5,19 @@ import com.cookieit.cart.api.model.response.ItemResponse;
 import com.cookieit.cart.model.dto.CartDTO;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CartDTOToResponseMapper {
 
-    public static CartResponse mapCartDTOToResponse(CartDTO cartDTO){
+    public static List<CartResponse> mapCartDTOsToResponseList(List<CartDTO> cartDTOList) {
+        return cartDTOList.stream()
+                .map(CartDTOToResponseMapper::mapCartDTOToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public static CartResponse mapCartDTOToResponse(CartDTO cartDTO) {
 
         List<ItemResponse> itemResponseList =
                 Optional.ofNullable(cartDTO.getItems())

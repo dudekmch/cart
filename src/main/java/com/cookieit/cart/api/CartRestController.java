@@ -5,7 +5,6 @@ import com.cookieit.cart.api.model.request.mapper.CartRequestToDTOMapper;
 import com.cookieit.cart.api.model.response.CartResponse;
 import com.cookieit.cart.api.model.response.mapper.CartDTOToResponseMapper;
 import com.cookieit.cart.domain.CartService;
-import com.cookieit.cart.domain.entity.Cart;
 import com.cookieit.cart.model.dto.CartDTO;
 import com.cookieit.cart.model.exception.CartNotFoundException;
 import io.swagger.annotations.Api;
@@ -21,9 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/")
 @Api("Cart")
 public class CartRestController {
 
@@ -33,8 +33,15 @@ public class CartRestController {
         this.cartService = cartService;
     }
 
+    @ApiOperation(value = "Get all carts")
+    @GetMapping(path = "carts")
+    public List<CartResponse> getCarts() {
+        List<CartDTO> cartDTOList = cartService.getCarts();
+        return CartDTOToResponseMapper.mapCartDTOsToResponseList(cartDTOList);
+    }
+
     @ApiOperation(value = "Get cart by id")
-    @GetMapping(path = "/{cartId}")
+    @GetMapping(path = "cart/{cartId}")
     public CartResponse getCart(@PathVariable("cartId") Long cartId) {
         try {
             CartDTO cartDto = cartService.getCart(cartId);
@@ -46,7 +53,7 @@ public class CartRestController {
     }
 
     @ApiOperation(value = "Create new cart")
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "cart", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public CartResponse createCart(@Valid @RequestBody CartRequest cartRequest) {
         Long id = cartService.createCart(CartRequestToDTOMapper.mapCartRequestToDTO(cartRequest));
         return CartResponse.builder()

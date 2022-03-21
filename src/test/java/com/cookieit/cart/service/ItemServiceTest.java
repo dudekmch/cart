@@ -71,7 +71,7 @@ public class ItemServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldUpdateItem() throws ItemNotFoundException  {
+    public void shouldUpdateItem() throws ItemNotFoundException {
         ItemDTO itemDTO = ItemDTO.builder()
                 .id(ITEM_ID_1)
                 .name(NEW_ITEM_NAME)

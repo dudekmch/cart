@@ -14,7 +14,7 @@ public class ItemToItemDTOMapper {
                 .collect(Collectors.toList());
     }
 
-    public static ItemDTO mapItemToItemDTO(Item item){
+    public static ItemDTO mapItemToItemDTO(Item item) {
         return ItemDTO.builder()
                 .id(item.getId())
                 .name(item.getName())

@@ -17,7 +17,7 @@ public class CartResponse {
 
     private String shopName;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
 
     private List<ItemResponse> items;

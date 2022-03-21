@@ -5,5 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class CartNotFoundException extends Exception {
-    public CartNotFoundException(String message) {super((message));}
+    public CartNotFoundException(String message) {
+        super((message));
+    }
 }
