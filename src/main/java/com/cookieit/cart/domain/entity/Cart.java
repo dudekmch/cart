@@ -5,12 +5,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
-@Table(schema = "cart")
 public class Cart extends AbstractEntity {
 
     @Column(nullable = false)
