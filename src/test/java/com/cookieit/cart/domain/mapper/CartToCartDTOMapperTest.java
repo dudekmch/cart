@@ -17,13 +17,6 @@ import static com.cookieit.cart.TestConstant.CART_SHOP_NAME;
 
 public class CartToCartDTOMapperTest {
 
-    private static final Long ITEM_ONE_ID = 1L;
-    private static final Long ITEM_TWO_ID = 2L;
-    private static final String ITEM_ONE_NAME = "nameItemOne";
-    private static final String ITEM_TWO_NAME = "nameItemTwo";
-    private static final Integer ITEM_ONE_QUANTITY = 2;
-    private static final Integer ITEM_TWO_QUANTITY = 3;
-
     private final Cart testCart = new Cart();
     private final Item itemOne = new Item();
     private final Item itemTwo = new Item();
@@ -32,7 +25,6 @@ public class CartToCartDTOMapperTest {
     @BeforeEach
     public void setUp() {
         setupCart();
-        setupItems();
     }
 
     @Test
@@ -54,15 +46,6 @@ public class CartToCartDTOMapperTest {
     private void setupCart() {
         testCart.setId(CART_ID);
         testCart.setShopName(CART_SHOP_NAME);
-    }
-
-    private void setupItems() {
-        itemOne.setId(ITEM_ONE_ID);
-        itemOne.setName(ITEM_ONE_NAME);
-        itemOne.setQuantity(ITEM_ONE_QUANTITY);
-        itemTwo.setId(ITEM_TWO_ID);
-        itemTwo.setName(ITEM_TWO_NAME);
-        itemTwo.setQuantity(ITEM_TWO_QUANTITY);
     }
 
 }
