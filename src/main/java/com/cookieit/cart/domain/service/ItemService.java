@@ -18,7 +18,7 @@ public class ItemService {
         this.cartService = cartService;
     }
 
-    public Long createItem(ItemDTO itemDTO) throws CartNotFoundException {
+    public Long createItem(final ItemDTO itemDTO) throws CartNotFoundException {
         Cart cart = this.cartService.getCartEntity(itemDTO.getCartId());
         Item item = new Item();
         item.setName(itemDTO.getName());
@@ -28,5 +28,8 @@ public class ItemService {
         return item.getId();
     }
 
+    public void removeItem(final Long itemId) {
+        itemRepository.deleteById(itemId);
+    }
 
 }
