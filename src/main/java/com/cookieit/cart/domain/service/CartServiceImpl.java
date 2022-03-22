@@ -5,6 +5,7 @@ import com.cookieit.cart.domain.entity.Cart;
 import com.cookieit.cart.domain.entity.mapper.CartToCartDTOMapper;
 import com.cookieit.cart.domain.repository.CartRepository;
 import com.cookieit.cart.model.dto.CartDTO;
+import com.cookieit.cart.model.exception.CartCreationException;
 import com.cookieit.cart.model.exception.CartNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +25,18 @@ public class CartServiceImpl implements CartService {
         return CartToCartDTOMapper.mapCartToCartDTO(cart);
     }
 
-    public Long createCart(final CartDTO cartDTO) {
-        Cart cart = new Cart();
-        cart.setShopName(cartDTO.getShopName());
-        cartRepository.save(cart);
-        return cart.getId();
+    public CartDTO createCart(final CartDTO cartDTO) throws CartCreationException {
+        try {
+            Long newCartId = saveNewCart(cartDTO);
+            Cart newCart = getCartEntity(newCartId);
+            return CartToCartDTOMapper.mapCartToCartDTO(newCart);
+        } catch (CartNotFoundException ex) {
+            throw new CartCreationException("Can not find created cart");
+        }
     }
 
     public List<CartDTO> getCarts() {
-        List<Cart> carts = cartRepository.findAll();
+        List<Cart> carts = cartRepository.getCarts();
         return CartToCartDTOMapper.mapCartsToCartDTOs(carts);
     }
 
@@ -40,15 +44,22 @@ public class CartServiceImpl implements CartService {
         cartRepository.deleteById(id);
     }
 
-    public void updateCart(final Long id, final CartDTO cartDTO) throws CartNotFoundException {
+    public CartDTO updateCart(final Long id, final CartDTO cartDTO) throws CartNotFoundException {
         Cart cart = getCartEntity(id);
-
         cart.setShopName(cartDTO.getShopName());
         cartRepository.save(cart);
+        return CartToCartDTOMapper.mapCartToCartDTO(cart);
     }
 
     protected Cart getCartEntity(final Long id) throws CartNotFoundException {
-        return cartRepository.findById(id)
+        return cartRepository.getCartById(id)
                 .orElseThrow(() -> new CartNotFoundException("Not found cart with id: " + id));
+    }
+
+    private Long saveNewCart(CartDTO cartDTO) {
+        Cart cart = new Cart();
+        cart.setShopName(cartDTO.getShopName());
+        cartRepository.save(cart);
+        return cart.getId();
     }
 }

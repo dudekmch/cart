@@ -2,6 +2,7 @@ package com.cookieit.cart.service;
 
 import com.cookieit.cart.domain.CartService;
 import com.cookieit.cart.model.dto.CartDTO;
+import com.cookieit.cart.model.exception.CartCreationException;
 import com.cookieit.cart.model.exception.CartNotFoundException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -53,12 +54,12 @@ public class CartServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldCreateCartAndReturnId() {
+    public void shouldCreateCartAndReturnId() throws CartCreationException {
         CartDTO cartToSave = CartDTO.builder()
                 .shopName(CART_SHOP_NAME)
                 .build();
-        Long savedCartId = cartService.createCart(cartToSave);
-        MatcherAssert.assertThat(savedCartId, Matchers.equalTo(2L));
+        CartDTO newCart = cartService.createCart(cartToSave);
+        MatcherAssert.assertThat(newCart.getId(), Matchers.equalTo(2L));
     }
 
     @Test

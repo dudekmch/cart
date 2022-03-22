@@ -20,7 +20,7 @@ public class Cart extends AbstractEntity {
     @CreationTimestamp
     private LocalDateTime created;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart", cascade = {CascadeType.REMOVE})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart", cascade = {CascadeType.REMOVE})
     private List<Item> items;
 
     public String getShopName() {
