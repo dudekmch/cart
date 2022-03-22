@@ -12,9 +12,9 @@ public interface ItemService {
 
     List<ItemDTO> getItemsForCart(final Long cartId);
 
-    Long createItem(final ItemDTO itemDTO) throws CartNotFoundException;
+    ItemDTO createItem(final ItemDTO itemDTO) throws CartNotFoundException;
 
     void removeItem(final Long itemId);
 
-    void updateItem(final ItemDTO itemDTO) throws ItemNotFoundException;
+    ItemDTO updateItem(final Long itemId, final ItemDTO itemDTO) throws ItemNotFoundException;
 }

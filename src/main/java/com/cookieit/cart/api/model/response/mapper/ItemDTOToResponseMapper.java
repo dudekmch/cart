@@ -7,6 +7,7 @@ public class ItemDTOToResponseMapper {
 
     public static ItemResponse mapItemDTOToResponse(ItemDTO itemDTO) {
         return ItemResponse.builder()
+                .id(itemDTO.getId())
                 .name(itemDTO.getName())
                 .quantity(itemDTO.getQuantity())
                 .build();

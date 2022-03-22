@@ -1,7 +1,6 @@
 package com.cookieit.cart.service;
 
 import com.cookieit.cart.domain.ItemService;
-import com.cookieit.cart.domain.entity.Item;
 import com.cookieit.cart.domain.repository.ItemRepository;
 import com.cookieit.cart.model.dto.ItemDTO;
 import com.cookieit.cart.model.exception.CartNotFoundException;
@@ -62,14 +61,14 @@ public class ItemServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldCreateItemAndReturnId() throws CartNotFoundException {
+    public void shouldCreateItemAndReturnDTO() throws CartNotFoundException {
         ItemDTO itemDTO = ItemDTO.builder()
                 .name(NEW_ITEM_NAME)
                 .quantity(NEW_ITEM_QUANTITY)
                 .cartId(IMPORT_DATA_CART_ID)
                 .build();
-        Long savedItemId = itemService.createItem(itemDTO);
-        MatcherAssert.assertThat(savedItemId, Matchers.equalTo(3L));
+        ItemDTO savedItemDTO = itemService.createItem(itemDTO);
+        MatcherAssert.assertThat(savedItemDTO.getId(), Matchers.equalTo(3L));
     }
 
     @Test
@@ -96,25 +95,21 @@ public class ItemServiceTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldUpdateItem() throws ItemNotFoundException {
         ItemDTO itemDTO = ItemDTO.builder()
-                .id(IMPORT_DATA_ITEM_ID_1)
                 .name(NEW_ITEM_NAME)
                 .quantity(NEW_ITEM_QUANTITY)
                 .build();
-        itemService.updateItem(itemDTO);
-        Item item = itemRepository.findById(IMPORT_DATA_ITEM_ID_1)
-                .orElse(null);
-        MatcherAssert.assertThat(item, notNullValue());
-        MatcherAssert.assertThat(item.getName(), Matchers.equalTo(NEW_ITEM_NAME));
-        MatcherAssert.assertThat(item.getQuantity(), Matchers.equalTo(NEW_ITEM_QUANTITY));
+        ItemDTO updatedItemDTO = itemService.updateItem(IMPORT_DATA_ITEM_ID_1, itemDTO);
+        MatcherAssert.assertThat(updatedItemDTO, notNullValue());
+        MatcherAssert.assertThat(updatedItemDTO.getName(), Matchers.equalTo(NEW_ITEM_NAME));
+        MatcherAssert.assertThat(updatedItemDTO.getQuantity(), Matchers.equalTo(NEW_ITEM_QUANTITY));
     }
 
     @Test
     public void shouldThrowItemNotFoundExceptionWhenItemToUpdateNotExist() {
         ItemDTO itemDTO = ItemDTO.builder()
-                .id(NOT_EXIST_ITEM_ID)
                 .build();
         ItemNotFoundException thrown =
-                Assertions.assertThrows(ItemNotFoundException.class, () -> itemService.updateItem(itemDTO));
+                Assertions.assertThrows(ItemNotFoundException.class, () -> itemService.updateItem(NOT_EXIST_ITEM_ID, itemDTO));
         MatcherAssert.assertThat(thrown.getMessage(), Matchers.equalTo(ITEM_NOT_FOUND_EXCEPTION_MESSAGE + NOT_EXIST_ITEM_ID));
     }
 }

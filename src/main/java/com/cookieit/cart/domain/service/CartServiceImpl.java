@@ -5,7 +5,6 @@ import com.cookieit.cart.domain.entity.Cart;
 import com.cookieit.cart.domain.entity.mapper.CartToCartDTOMapper;
 import com.cookieit.cart.domain.repository.CartRepository;
 import com.cookieit.cart.model.dto.CartDTO;
-import com.cookieit.cart.model.exception.CartCreationException;
 import com.cookieit.cart.model.exception.CartNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +24,8 @@ public class CartServiceImpl implements CartService {
         return CartToCartDTOMapper.mapCartToCartDTO(cart);
     }
 
-    public CartDTO createCart(final CartDTO cartDTO) throws CartCreationException {
-        try {
-            Long newCartId = saveNewCart(cartDTO);
-            Cart newCart = getCartEntity(newCartId);
-            return CartToCartDTOMapper.mapCartToCartDTO(newCart);
-        } catch (CartNotFoundException ex) {
-            throw new CartCreationException("Can not find created cart");
-        }
+    public CartDTO createCart(final CartDTO cartDTO) {
+        return CartToCartDTOMapper.mapCartToCartDTO(saveNewCart(cartDTO));
     }
 
     public List<CartDTO> getCarts() {
@@ -48,7 +41,8 @@ public class CartServiceImpl implements CartService {
         Cart cart = getCartEntity(id);
         cart.setShopName(cartDTO.getShopName());
         cartRepository.save(cart);
-        return CartToCartDTOMapper.mapCartToCartDTO(cart);
+        Cart updatedCart = getCartEntity(id);
+        return CartToCartDTOMapper.mapCartToCartDTO(updatedCart);
     }
 
     protected Cart getCartEntity(final Long id) throws CartNotFoundException {
@@ -56,10 +50,9 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new CartNotFoundException("Not found cart with id: " + id));
     }
 
-    private Long saveNewCart(CartDTO cartDTO) {
+    private Cart saveNewCart(CartDTO cartDTO) {
         Cart cart = new Cart();
         cart.setShopName(cartDTO.getShopName());
-        cartRepository.save(cart);
-        return cart.getId();
+        return cartRepository.save(cart);
     }
 }

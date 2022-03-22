@@ -33,25 +33,24 @@ public class ItemServiceImpl implements ItemService {
         return ItemToItemDTOMapper.mapItemToItemDTO(item);
     }
 
-    public Long createItem(final ItemDTO itemDTO) throws CartNotFoundException {
+    public ItemDTO createItem(final ItemDTO itemDTO) throws CartNotFoundException {
         Cart cart = this.cartService.getCartEntity(itemDTO.getCartId());
         Item item = new Item();
         item.setName(itemDTO.getName());
         item.setQuantity(itemDTO.getQuantity());
         item.setCart(cart);
-        itemRepository.save(item);
-        return item.getId();
+        return ItemToItemDTOMapper.mapItemToItemDTO(itemRepository.save(item));
     }
 
     public void removeItem(final Long itemId) {
         itemRepository.deleteById(itemId);
     }
 
-    public void updateItem(final ItemDTO itemDTO) throws ItemNotFoundException {
-        Item item = getItemEntity(itemDTO.getId());
-        item.setName(itemDTO.getName());
-        item.setQuantity(itemDTO.getQuantity());
-        itemRepository.save(item);
+    public ItemDTO updateItem(final Long itemId, final ItemDTO itemDTO) throws ItemNotFoundException {
+        Item itemToSave = getItemEntity(itemId);
+        itemToSave.setName(itemDTO.getName());
+        itemToSave.setQuantity(itemDTO.getQuantity());
+        return ItemToItemDTOMapper.mapItemToItemDTO(itemRepository.save(itemToSave));
     }
 
     private Item getItemEntity(final Long itemId) throws ItemNotFoundException {

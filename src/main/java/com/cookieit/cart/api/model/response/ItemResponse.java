@@ -7,6 +7,8 @@ import lombok.Getter;
 @Getter
 public class ItemResponse {
 
+    private Long id;
+
     private String name;
 
     private Integer quantity;

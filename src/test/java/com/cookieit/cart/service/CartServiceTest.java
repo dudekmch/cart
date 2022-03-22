@@ -76,10 +76,8 @@ public class CartServiceTest {
         CartDTO cartDTO = CartDTO.builder()
                 .shopName(CART_SHOP_NAME_NEW_VALUE)
                 .build();
-        cartService.updateCart(IMPORT_DATA_CART_ID, cartDTO);
-        List<CartDTO> cartDTOs = cartService.getCarts();
-        MatcherAssert.assertThat(cartDTOs.size(), Matchers.equalTo(IMPORT_DATA_CARTS_NUMBER));
-        MatcherAssert.assertThat(cartDTOs.get(0).getShopName(), Matchers.equalTo(CART_SHOP_NAME_NEW_VALUE));
+        CartDTO updatedCartDTO = cartService.updateCart(IMPORT_DATA_CART_ID, cartDTO);
+        MatcherAssert.assertThat(updatedCartDTO.getShopName(), Matchers.equalTo(CART_SHOP_NAME_NEW_VALUE));
     }
 
     @Test
