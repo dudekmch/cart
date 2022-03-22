@@ -5,7 +5,9 @@ import com.cookieit.cart.api.model.request.mapper.CartRequestToDTOMapper;
 import com.cookieit.cart.api.model.response.CartResponse;
 import com.cookieit.cart.api.model.response.mapper.CartDTOToResponseMapper;
 import com.cookieit.cart.domain.CartService;
+import com.cookieit.cart.domain.ItemService;
 import com.cookieit.cart.model.dto.CartDTO;
+import com.cookieit.cart.model.dto.ItemDTO;
 import com.cookieit.cart.model.exception.CartCreationException;
 import com.cookieit.cart.model.exception.CartNotFoundException;
 import io.swagger.annotations.Api;
@@ -32,8 +34,11 @@ public class CartRestController {
 
     private final CartService cartService;
 
-    public CartRestController(CartService cartService) {
+    private final ItemService itemService;
+
+    public CartRestController(CartService cartService, ItemService itemService) {
         this.cartService = cartService;
+        this.itemService = itemService;
     }
 
     @ApiOperation(value = "Get all carts")
@@ -61,20 +66,20 @@ public class CartRestController {
         try {
             CartDTO cartDTO = cartService.createCart(CartRequestToDTOMapper.mapCartRequestToDTO(cartRequest));
             return CartDTOToResponseMapper.mapCartDTOToResponse(cartDTO);
-        } catch(CartCreationException ex) {
+        } catch (CartCreationException ex) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, "Error during creating cart", ex);
         }
     }
 
     @ApiOperation(value = "Delete cart")
-    @DeleteMapping (path = "cart/{cartId}")
+    @DeleteMapping(path = "cart/{cartId}")
     public void deleteCart(@PathVariable("cartId") Long cartId) {
         cartService.removeCart(cartId);
     }
 
     @ApiOperation(value = "Put cart")
-    @PutMapping (path = "cart/{cartId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "cart/{cartId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CartResponse putCart(@PathVariable("cartId") Long cartId, @Valid @RequestBody CartRequest cartRequest) {
         try {
             CartDTO cartDTO = cartService.updateCart(cartId, CartRequestToDTOMapper.mapCartRequestToDTO(cartRequest));
@@ -83,5 +88,12 @@ public class CartRestController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Cart Not Found", ex);
         }
+    }
+
+    @ApiOperation(value = "Get cart items")
+    @GetMapping(path = "cart/{cartId}/items")
+    public CartResponse getCartItems(@PathVariable("cartId") Long cartId) {
+        List<ItemDTO> itemDTOList = itemService.getItemsForCart(cartId);
+        return CartDTOToResponseMapper.mapItemDTOsToCartResponse(itemDTOList);
     }
 }
