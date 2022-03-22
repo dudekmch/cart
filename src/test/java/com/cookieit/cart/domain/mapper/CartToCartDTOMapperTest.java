@@ -15,7 +15,7 @@ import java.util.List;
 import static com.cookieit.cart.TestConstant.CART_ID;
 import static com.cookieit.cart.TestConstant.CART_SHOP_NAME;
 
-public class CartToCartDTOMapperTest {
+class CartToCartDTOMapperTest {
 
     private final Cart testCart = new Cart();
     private final Item itemOne = new Item();
@@ -28,7 +28,7 @@ public class CartToCartDTOMapperTest {
     }
 
     @Test
-    public void shouldCorrectMapCartEntityWithItemsToDTO() {
+    void shouldCorrectMapCartEntityWithItemsToDTO() {
         testCart.setItems(items);
         CartDTO cartDTO = CartToCartDTOMapper.mapCartToCartDTO(testCart);
         MatcherAssert.assertThat(cartDTO.getId(), Matchers.equalTo(CART_ID));
@@ -37,7 +37,7 @@ public class CartToCartDTOMapperTest {
     }
 
     @Test
-    public void shouldReturnCartDTOWithEmptyItemsListWhenItemsListIsNull() {
+    void shouldReturnCartDTOWithEmptyItemsListWhenItemsListIsNull() {
         testCart.setItems(null);
         CartDTO cartDTO = CartToCartDTOMapper.mapCartToCartDTO(testCart);
         MatcherAssert.assertThat(cartDTO.getItems().size(), Matchers.equalTo(0));

@@ -25,7 +25,7 @@ import static com.cookieit.cart.TestConstant.NOT_EXIST_CART_ID;
 @SpringBootTest
 @EnableTransactionManagement
 @TestPropertySource("/utest.properties")
-public class CartServiceTest {
+class CartServiceTest {
 
     private static final Integer IMPORT_DATA_CARTS_NUMBER = 1;
     private static final String CART_SHOP_NAME_NEW_VALUE = "updatedShopName";
@@ -34,27 +34,27 @@ public class CartServiceTest {
     private CartService cartService;
 
     @Test
-    public void shouldReturnCart() throws CartNotFoundException {
+    void shouldReturnCart() throws CartNotFoundException {
         CartDTO cartDTO = cartService.getCart(IMPORT_DATA_CART_ID);
         MatcherAssert.assertThat(cartDTO.getId(), Matchers.equalTo(IMPORT_DATA_CART_ID));
     }
 
     @Test
-    public void shouldThrowCartNotFoundExceptionWhenCartWithIdNotExist() {
+    void shouldThrowCartNotFoundExceptionWhenCartWithIdNotExist() {
         CartNotFoundException thrown =
                 Assertions.assertThrows(CartNotFoundException.class, () -> cartService.getCart(NOT_EXIST_CART_ID));
         MatcherAssert.assertThat(thrown.getMessage(), Matchers.equalTo(CART_NOT_FOUND_EXCEPTION_MESSAGE + NOT_EXIST_CART_ID));
     }
 
     @Test
-    public void shouldReturnAllCarts() {
+    void shouldReturnAllCarts() {
         List<CartDTO> cartDTOs = cartService.getCarts();
         MatcherAssert.assertThat(cartDTOs.size(), Matchers.equalTo(IMPORT_DATA_CARTS_NUMBER));
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldCreateCartAndReturnId() throws CartCreationException {
+    void shouldCreateCartAndReturnId() throws CartCreationException {
         CartDTO cartToSave = CartDTO.builder()
                 .shopName(CART_SHOP_NAME)
                 .build();
@@ -64,7 +64,7 @@ public class CartServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldRemoveCart() {
+    void shouldRemoveCart() {
         cartService.removeCart(IMPORT_DATA_CART_ID);
         List<CartDTO> cartDTOs = cartService.getCarts();
         MatcherAssert.assertThat(cartDTOs.size(), Matchers.equalTo(IMPORT_DATA_CARTS_NUMBER - 1));
@@ -72,7 +72,7 @@ public class CartServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldUpdateShopNameInCart() throws CartNotFoundException {
+    void shouldUpdateShopNameInCart() throws CartNotFoundException {
         CartDTO cartDTO = CartDTO.builder()
                 .shopName(CART_SHOP_NAME_NEW_VALUE)
                 .build();
@@ -81,7 +81,7 @@ public class CartServiceTest {
     }
 
     @Test
-    public void shouldThrowCartNotFoundExceptionWhenCartToUpdateNotExist() {
+    void shouldThrowCartNotFoundExceptionWhenCartToUpdateNotExist() {
         CartDTO cartDTO = CartDTO.builder()
                 .shopName(CART_SHOP_NAME_NEW_VALUE)
                 .build();

@@ -3,12 +3,14 @@ package com.cookieit.cart.domain.entity.mapper;
 import com.cookieit.cart.domain.entity.Cart;
 import com.cookieit.cart.model.dto.CartDTO;
 import com.cookieit.cart.model.dto.ItemDTO;
+import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class CartToCartDTOMapper {
 
     public static List<CartDTO> mapCartsToCartDTOs(List<Cart> carts) {

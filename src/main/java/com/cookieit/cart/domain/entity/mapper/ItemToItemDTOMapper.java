@@ -2,10 +2,12 @@ package com.cookieit.cart.domain.entity.mapper;
 
 import com.cookieit.cart.domain.entity.Item;
 import com.cookieit.cart.model.dto.ItemDTO;
+import lombok.experimental.UtilityClass;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class ItemToItemDTOMapper {
 
     public static List<ItemDTO> mapItemsToItemDTOs(List<Item> items) {

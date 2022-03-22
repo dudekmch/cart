@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.notNullValue;
 @SpringBootTest
 @EnableTransactionManagement
 @TestPropertySource("/utest.properties")
-public class ItemServiceTest {
+class ItemServiceTest {
 
     private static final Integer NEW_ITEM_QUANTITY = 5;
     private static final Long IMPORT_DATA_ITEM_ID_1 = 1L;
@@ -41,27 +41,27 @@ public class ItemServiceTest {
     private ItemRepository itemRepository;
 
     @Test
-    public void shouldReturnItem() throws ItemNotFoundException {
+    void shouldReturnItem() throws ItemNotFoundException {
         ItemDTO itemDTO = itemService.getItem(IMPORT_DATA_ITEM_ID_1);
         MatcherAssert.assertThat(itemDTO.getId(), Matchers.equalTo(IMPORT_DATA_ITEM_ID_1));
     }
 
     @Test
-    public void shouldThrowItemNotFoundExceptionWhenItemWithIdNotExist() {
+    void shouldThrowItemNotFoundExceptionWhenItemWithIdNotExist() {
         ItemNotFoundException thrown =
                 Assertions.assertThrows(ItemNotFoundException.class, () -> itemService.getItem(NOT_EXIST_ITEM_ID));
         MatcherAssert.assertThat(thrown.getMessage(), Matchers.equalTo(ITEM_NOT_FOUND_EXCEPTION_MESSAGE + NOT_EXIST_ITEM_ID));
     }
 
     @Test
-    public void shouldReturnItemsForCartId() {
+    void shouldReturnItemsForCartId() {
         List<ItemDTO> itemDTOList = itemService.getItemsForCart(IMPORT_DATA_CART_ID);
         MatcherAssert.assertThat(itemDTOList.size(), Matchers.equalTo(IMPORT_DATA_ITEM_COUNT));
     }
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldCreateItemAndReturnDTO() throws CartNotFoundException {
+    void shouldCreateItemAndReturnDTO() throws CartNotFoundException {
         ItemDTO itemDTO = ItemDTO.builder()
                 .name(NEW_ITEM_NAME)
                 .quantity(NEW_ITEM_QUANTITY)
@@ -72,7 +72,7 @@ public class ItemServiceTest {
     }
 
     @Test
-    public void shouldThrowCartNotFoundExceptionWhenCartWithIdNotExist() {
+    void shouldThrowCartNotFoundExceptionWhenCartWithIdNotExist() {
         ItemDTO itemDTO = ItemDTO.builder()
                 .name(NEW_ITEM_NAME)
                 .quantity(NEW_ITEM_QUANTITY)
@@ -85,7 +85,7 @@ public class ItemServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldRemoveItem() {
+    void shouldRemoveItem() {
         itemService.removeItem(IMPORT_DATA_ITEM_ID_1);
         long countLeftItems = itemRepository.count();
         MatcherAssert.assertThat(countLeftItems, Matchers.equalTo(1L));
@@ -93,7 +93,7 @@ public class ItemServiceTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    public void shouldUpdateItem() throws ItemNotFoundException {
+    void shouldUpdateItem() throws ItemNotFoundException {
         ItemDTO itemDTO = ItemDTO.builder()
                 .name(NEW_ITEM_NAME)
                 .quantity(NEW_ITEM_QUANTITY)
@@ -105,7 +105,7 @@ public class ItemServiceTest {
     }
 
     @Test
-    public void shouldThrowItemNotFoundExceptionWhenItemToUpdateNotExist() {
+    void shouldThrowItemNotFoundExceptionWhenItemToUpdateNotExist() {
         ItemDTO itemDTO = ItemDTO.builder()
                 .build();
         ItemNotFoundException thrown =

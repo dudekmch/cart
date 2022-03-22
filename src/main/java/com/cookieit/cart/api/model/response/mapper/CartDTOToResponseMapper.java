@@ -4,12 +4,14 @@ import com.cookieit.cart.api.model.response.CartResponse;
 import com.cookieit.cart.api.model.response.ItemResponse;
 import com.cookieit.cart.model.dto.CartDTO;
 import com.cookieit.cart.model.dto.ItemDTO;
+import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class CartDTOToResponseMapper {
 
     public static List<CartResponse> mapCartDTOsToResponseList(final List<CartDTO> cartDTOList) {
